@@ -76,7 +76,7 @@ OPT = 0
 # CFLAGS -H show header files
 
 AFLAGS  = -I./GD32F10x_standard_peripheral/Include -I -Ispl/CMSIS -Ispl/inc -c -g -mcpu=cortex-m3 -mthumb -l libgcc
-CFLAGS  += -I./GD32F10x_standard_peripheral/Include -I./ -I./spl/CMSIS -I./spl/CMSIS/inc -I./spl/inc -DUSE_FULL_ASSERT -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -c -fno-common -O$(OPT) -g -mcpu=cortex-m3 -mthumb -ffunction-sections -fdata-sections -l libgcc 
+CFLAGS  += -I./GD32F10x_standard_peripheral/Include -I. -I./spl/CMSIS -I./spl/CMSIS/inc -I./spl/inc -DUSE_FULL_ASSERT -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -c -fno-common -O$(OPT) -g -mcpu=cortex-m3 -mthumb -ffunction-sections -fdata-sections -l libgcc 
 # Need following option for LTO as LTO will treat retarget functions as
 # unused without following option
 CFLAGS += -fno-builtin
@@ -93,21 +93,24 @@ ODFLAGS = -S
 
 include ../../common/Makefile.common
 
+# dev platform specific.
+ifeq ($(OS),Windows_NT)
+  OPENOCD_PATH := E:/nrf5/Toolchain/OpenOCD/0.10.0-12-20190422-2015/bin
+  OPENOCD_BIN := openocd.exe
+  NRFUTIL := $(SDK_ROOT)/external_tools/Windows/nrfutil.exe
+  CUSTOM_SOURCES=$(shell powershell Get-ChildItem -Name -File -Filter *.c -Recurse)
+else
+  OPENOCD_PATH := /usr/local/share/openocd/bin
+  OPENOCD_BIN := openocd
+  NRFUTIL := nrfutil
+  CUSTOM_SOURCES=$(shell find spl ugui_driver *.c -type f -iname '*.c')
+endif
+
 COMMONDIR = ../../common/src
 OBJDIR = _build
-CUSTOM_SOURCES=$(shell find spl ugui_driver *.c -type f -iname '*.c') 
 COMMON_SOURCES = fault.c buttons.c utils.c ugui.c fonts.c state.c screen.c mainscreen.c configscreen.c eeprom.c
 SOURCES = $(CUSTOM_SOURCES) $(foreach x, $(COMMON_SOURCES), $(COMMONDIR)/$(x))
 OBJECTS = $(foreach x, $(basename $(SOURCES)), $(OBJDIR)/$(x).o)
-
-# dev platform specific.
-# OPENOCD_PATH := E:/nrf5/Toolchain/OpenOCD/0.10.0-12-20190422-2015/bin
-# OPENOCD_BIN := openocd.exe
-# NRFUTIL := $(SDK_ROOT)/external_tools/Windows/nrfutil.exe
-
-OPENOCD_PATH := /usr/local/share/openocd/bin
-OPENOCD_BIN := openocd
-NRFUTIL := nrfutil
 
 OPENOCD := '$(OPENOCD_PATH)/$(OPENOCD_BIN)' -f $(OPENOCD_PATH)/../scripts/interface/stlink.cfg -f $(OPENOCD_PATH)/../scripts/target/stm32f1x.cfg
 
@@ -117,9 +120,18 @@ all: main.bin size
 test:
 	echo objs $(OBJECTS)
 
-clean: 
+ifeq ($(OS),Windows_NT)
+clean:
+	if exist main.lst del main.lst
+	if exist main.elf del main.elf
+	if exist main.bin del main.bin
+	if exist $(OBJDIR) rmdir /s /q $(OBJDIR)
+	if exist .deps rmdir /s /q .deps
+else
+clean:
 	rm -f main.lst main.elf main.bin
 	rm -rf $(OBJDIR) .deps
+endif
 
 flash_serial: main.bin 
 	$(STM32FLASH) main.bin
@@ -163,10 +175,20 @@ DEPFLAGS = -MT $@ -MD -MP -MF $(DEPDIR)/$*.d
 COMPILE.c = $(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 
 $(OBJDIR)/%.o : %.c $(DEPDIR)/%.d | $(DEPDIR)
+ifeq ($(OS),Windows_NT)
+	@if not exist $(subst /,\,$(dir $@)) mkdir $(subst /,\,$(dir $@))
+	@if not exist $(subst /,\,$(DEPDIR)/$(dir $<)) mkdir $(subst /,\,$(DEPDIR)/$(dir $<))
+else
 	@mkdir -p $(dir $@) $(DEPDIR)/$(dir $<)
+endif
 	$(COMPILE.c) $(OUTPUT_OPTION) $< 
-	
-$(DEPDIR): ; @mkdir -p $@
+
+$(DEPDIR):
+ifeq ($(OS),Windows_NT)
+	@if not exist $@ mkdir $@
+else
+	@mkdir -p $@
+endif
 
 DEPFILES := $(SOURCES:%.c=$(DEPDIR)/%.d)
 $(DEPFILES):
