@@ -563,6 +563,8 @@ void eeprom_init_variables(void) {
     ui_vars->ui16_torque_sensor_calibration_table_right[i][0] = m_eeprom_data.ui16_torque_sensor_calibration_table_right[i][0];
     ui_vars->ui16_torque_sensor_calibration_table_right[i][1] = m_eeprom_data.ui16_torque_sensor_calibration_table_right[i][1];
   }
+  ui_vars->ui16_torque_sensor_calibration_table_left[0][0] = 0;
+  ui_vars->ui16_torque_sensor_calibration_table_right[0][0] = 0;
 
   g_showNextScreenIndex = m_eeprom_data.showNextScreenIndex;
 
