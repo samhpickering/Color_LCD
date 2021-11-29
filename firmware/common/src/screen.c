@@ -652,7 +652,7 @@ int32_t convertUnits(int32_t val, ConvertUnitsType type) {
       break;
 
     case ConvertToImperial_mass:
-      val = (val * 220) / 100;
+      val = (((val + 1) * 220) / 1000) * 10;
       break;
 
     case ConvertFromImperial_mass:
