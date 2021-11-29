@@ -981,31 +981,13 @@ void prepare_torque_sensor_calibration_table(void) {
   // we need to make this atomic
   rt_processing_stop();
 
-  // at the very first time, copy the ADC values from one table to the other
-  if (first_time) {
-    first_time = false;
-
-    for (uint8_t i = 0; i < 8; i++) {
-      rt_vars.ui16_torque_sensor_calibration_table_left[i][0] = ui_vars.ui16_torque_sensor_calibration_table_left[i][1];
-      rt_vars.ui16_torque_sensor_calibration_table_right[i][0] = ui_vars.ui16_torque_sensor_calibration_table_right[i][1];
-    }
+  // copy the ADC values from one table to the other
+  for (uint8_t i = 0; i < 8; i++) {
+    rt_vars.ui16_torque_sensor_calibration_table_left[i][0] = ui_vars.ui16_torque_sensor_calibration_table_left[i][0];
+    rt_vars.ui16_torque_sensor_calibration_table_right[i][0] = ui_vars.ui16_torque_sensor_calibration_table_right[i][0];
+    rt_vars.ui16_torque_sensor_calibration_table_left[i][1] = ui_vars.ui16_torque_sensor_calibration_table_left[i][1];
+    rt_vars.ui16_torque_sensor_calibration_table_right[i][1] = ui_vars.ui16_torque_sensor_calibration_table_right[i][1];
   }
-
-  // get the delta values of ADC steps per kg
-  for (uint8_t i = 1; i < 8; i++) {
-    // get the deltas x100
-    rt_vars.ui16_torque_sensor_calibration_table_left[i][1] =
-        ((ui_vars.ui16_torque_sensor_calibration_table_left[i][0] - ui_vars.ui16_torque_sensor_calibration_table_left[i - 1][0]) * 10) /
-        (ui_vars.ui16_torque_sensor_calibration_table_left[i][1] - ui_vars.ui16_torque_sensor_calibration_table_left[i - 1][1]);
-
-    rt_vars.ui16_torque_sensor_calibration_table_right[i][1] =
-        ((ui_vars.ui16_torque_sensor_calibration_table_right[i][0] - ui_vars.ui16_torque_sensor_calibration_table_right[i - 1][0]) * 10) /
-        (ui_vars.ui16_torque_sensor_calibration_table_right[i][1] - ui_vars.ui16_torque_sensor_calibration_table_right[i - 1][1]);
-  }
-  // very first table value need to the calculated here
-  rt_vars.ui16_torque_sensor_calibration_table_left[0][1] = rt_vars.ui16_torque_sensor_calibration_table_left[1][1]; // the first delta is equal the the second one
-  rt_vars.ui16_torque_sensor_calibration_table_right[0][1] = rt_vars.ui16_torque_sensor_calibration_table_right[1][1]; // the first delta is equal the the second one
-
 
   rt_processing_start();
 }
