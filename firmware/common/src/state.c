@@ -976,8 +976,6 @@ void rt_processing(void)
 }
 
 void prepare_torque_sensor_calibration_table(void) {
-  static bool first_time = true;
-
   // we need to make this atomic
   rt_processing_stop();
 
