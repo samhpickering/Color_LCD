@@ -51,8 +51,8 @@ typedef struct rt_vars_struct {
 	uint8_t ui8_adc_throttle;
 	uint8_t ui8_throttle;
 	uint16_t ui16_adc_pedal_torque_sensor;
-	uint8_t ui8_pedal_weight_with_offset;
-	uint8_t ui8_pedal_weight;
+	uint16_t ui16_pedal_weight_with_offset;
+	uint16_t ui16_pedal_weight;
 	uint16_t ui16_pedal_power_x10;
 	uint8_t ui8_duty_cycle;
 	uint8_t ui8_error_states;
@@ -188,8 +188,8 @@ typedef struct ui_vars_struct {
 	uint8_t ui8_adc_throttle;
 	uint8_t ui8_throttle;
 	uint16_t ui16_adc_pedal_torque_sensor;
-	uint8_t ui8_pedal_weight_with_offset;
-	uint8_t ui8_pedal_weight;
+	uint16_t ui16_pedal_weight_with_offset;
+	uint16_t ui16_pedal_weight;
 	uint8_t ui8_duty_cycle;
 	uint8_t ui8_error_states;
 	uint16_t ui16_wheel_speed_x10;

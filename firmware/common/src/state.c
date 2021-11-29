@@ -144,7 +144,7 @@ rt_vars.ui16_wheel_speed_x10 = 842; // for testing, just leave speed fixed
 
 	rt_vars.ui16_adc_pedal_torque_sensor = fake(0, 1023);
 
-	rt_vars.ui8_pedal_weight = fake(0, 100);
+	rt_vars.ui16_pedal_weight = fake(0, 1000);
 
 	rt_vars.ui8_pedal_cadence = fakeRandom(&cadencestore, 0, 93);
 
@@ -688,8 +688,8 @@ void copy_rt_to_ui_vars(void) {
 	ui_vars.ui8_motor_current_x5 = rt_vars.ui8_motor_current_x5;
 	ui_vars.ui8_throttle = rt_vars.ui8_throttle;
 	ui_vars.ui16_adc_pedal_torque_sensor = rt_vars.ui16_adc_pedal_torque_sensor;
-	ui_vars.ui8_pedal_weight_with_offset = rt_vars.ui8_pedal_weight_with_offset;
-	ui_vars.ui8_pedal_weight = rt_vars.ui8_pedal_weight;
+	ui_vars.ui16_pedal_weight_with_offset = rt_vars.ui16_pedal_weight_with_offset;
+	ui_vars.ui16_pedal_weight = rt_vars.ui16_pedal_weight;
 	ui_vars.ui8_duty_cycle = rt_vars.ui8_duty_cycle;
 	ui_vars.ui8_error_states = rt_vars.ui8_error_states;
 	ui_vars.ui16_wheel_speed_x10 = rt_vars.ui16_wheel_speed_x10;
@@ -902,8 +902,8 @@ void communications(void) {
             }
 
             rt_vars.ui16_adc_pedal_torque_sensor = ((uint16_t) p_rx_buffer[11]) | (((uint16_t) (p_rx_buffer[7] & 0xC0)) << 2);
-            rt_vars.ui8_pedal_weight_with_offset = p_rx_buffer[12];
-            rt_vars.ui8_pedal_weight = p_rx_buffer[13];
+            rt_vars.ui16_pedal_weight_with_offset = p_rx_buffer[12] * 10;
+            rt_vars.ui16_pedal_weight = p_rx_buffer[13] * 10;
 
             rt_vars.ui8_pedal_cadence = p_rx_buffer[14];
 
@@ -995,11 +995,11 @@ void prepare_torque_sensor_calibration_table(void) {
   for (uint8_t i = 1; i < 8; i++) {
     // get the deltas x100
     rt_vars.ui16_torque_sensor_calibration_table_left[i][1] =
-        ((ui_vars.ui16_torque_sensor_calibration_table_left[i][0] - ui_vars.ui16_torque_sensor_calibration_table_left[i - 1][0]) * 100) /
+        ((ui_vars.ui16_torque_sensor_calibration_table_left[i][0] - ui_vars.ui16_torque_sensor_calibration_table_left[i - 1][0]) * 10) /
         (ui_vars.ui16_torque_sensor_calibration_table_left[i][1] - ui_vars.ui16_torque_sensor_calibration_table_left[i - 1][1]);
 
     rt_vars.ui16_torque_sensor_calibration_table_right[i][1] =
-        ((ui_vars.ui16_torque_sensor_calibration_table_right[i][0] - ui_vars.ui16_torque_sensor_calibration_table_right[i - 1][0]) * 100) /
+        ((ui_vars.ui16_torque_sensor_calibration_table_right[i][0] - ui_vars.ui16_torque_sensor_calibration_table_right[i - 1][0]) * 10) /
         (ui_vars.ui16_torque_sensor_calibration_table_right[i][1] - ui_vars.ui16_torque_sensor_calibration_table_right[i - 1][1]);
   }
   // very first table value need to the calculated here
