@@ -1901,29 +1901,33 @@ static bool onPressScrollable(buttons_events_t events) {
     // Before we move away, mark the current item as dirty, so it will be redrawn (prevent leaving blinking arrow turds on the screen)
     curActive->rw->dirty = true;
 
+	int numEntries = countEntries(s);
+
     // Go to previous
     if(events & UP_CLICK) {
       if (s->rw->scrollable.selected >= 1) {
         s->rw->scrollable.selected--;
-      }
-
-      if (s->rw->scrollable.selected < s->rw->scrollable.first) // we need to scroll the whole list up some
-        s->rw->scrollable.first = s->rw->scrollable.selected;
+      } else {
+		s->rw->scrollable.selected = numEntries - 1;
+	  }
     }
 
     // Go to next
     if (events & DOWN_CLICK) {
-      int numEntries = countEntries(s);
-
       if (s->rw->scrollable.selected < numEntries - 1) {
         s->rw->scrollable.selected++;
-      }
-
-      int numDataRows = maxRowsPerScreen - 1;
-      int lastVisibleRow = s->rw->scrollable.first + numDataRows - 1;
-      if (s->rw->scrollable.selected > lastVisibleRow) // we need to scroll the whole list down some
-        s->rw->scrollable.first = s->rw->scrollable.selected - numDataRows + 1;
+      } else {
+		s->rw->scrollable.selected = 0;
+	  }
     }
+
+	int numDataRows = maxRowsPerScreen - 1;
+    int lastVisibleRow = s->rw->scrollable.first + numDataRows - 1;
+    if (s->rw->scrollable.selected > lastVisibleRow) // we need to scroll the whole list down some
+        s->rw->scrollable.first = s->rw->scrollable.selected - numDataRows + 1;
+
+	if (s->rw->scrollable.selected < s->rw->scrollable.first) // we need to scroll the whole list up some
+        s->rw->scrollable.first = s->rw->scrollable.selected;
 
     forceScrollableRender();
     handled = true;
