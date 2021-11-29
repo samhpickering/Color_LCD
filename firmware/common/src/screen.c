@@ -2428,7 +2428,7 @@ void update_battery_power_usage_label(void) {
   static const char str_km[] = "Wh/km";
   static const char str_mi[] = "Wh/mi";
 
-  if(ui_vars.ui8_units_type == 0) {
+  if(ui_vars.ui8_units_dist == 0) {
     updateReadOnlyLabelStr(&batteryPowerUsageField, str_km);
 #ifndef SW102
     updateReadOnlyLabelStr(&batteryPowerUsageFieldGraph, str_km);

@@ -30,7 +30,7 @@ typedef struct eeprom_data {
 	uint8_t ui8_assist_level;
 	uint16_t ui16_wheel_perimeter;
 	uint8_t ui8_wheel_max_speed;
-	uint8_t ui8_units_type;
+	uint8_t ui8_units_dist;
 	uint32_t ui32_wh_x10_offset;
 	uint32_t ui32_wh_x10_100_percent;
 	uint8_t ui8_battery_soc_enable;
@@ -174,6 +174,10 @@ typedef struct eeprom_data {
   uint32_t ui32_trip_b_time;
   uint16_t ui16_trip_b_max_speed_x10;
 
+  uint8_t ui8_units_temp;
+  uint8_t ui8_units_time;
+  uint8_t ui8_units_weight;
+
 // FIXME align to 32 bit value by end of structure and pack other fields
 } eeprom_data_t;
 
@@ -188,7 +192,10 @@ void eeprom_init_defaults(void);
 #define DEFAULT_VALUE_NUMBER_OF_ASSIST_LEVELS                       20
 #define DEFAULT_VALUE_WHEEL_PERIMETER                               2100 // 27.5'' wheel: 2100mm perimeter
 #define DEFAULT_VALUE_WHEEL_MAX_SPEED                               50
-#define DEFAULT_VALUE_UNITS_TYPE                                    0 // 0 = km/h
+#define DEFAULT_VALUE_UNITS_DIST                                  0 // 0 = km/h
+#define DEFAULT_VALUE_UNITS_TIME                                    0 // 0 = 24h
+#define DEFAULT_VALUE_UNITS_TEMP                                    0 // 0 = C
+#define DEFAULT_VALUE_UNITS_WEIGHT                                  0 // 0 = kg
 #define DEFAULT_VALUE_WH_X10_OFFSET                                 0
 #define DEFAULT_VALUE_HW_X10_100_PERCENT                            4000 // default to a battery of 400 Wh
 #define DEAFULT_VALUE_SHOW_NUMERIC_BATTERY_SOC                      1 // SOC

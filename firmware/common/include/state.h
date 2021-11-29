@@ -81,7 +81,7 @@ typedef struct rt_vars_struct {
 	uint8_t ui8_number_of_assist_levels;
 	uint16_t ui16_wheel_perimeter;
 	uint8_t ui8_wheel_max_speed;
-	uint8_t ui8_units_type;
+	uint8_t ui8_units_dist;
 	uint32_t ui32_wh_x10_offset;
 	uint32_t ui32_wh_x10_100_percent;
 	uint8_t ui8_target_max_battery_power_div25;
@@ -162,6 +162,10 @@ typedef struct rt_vars_struct {
   uint8_t ui8_coast_brake_enable;
 
   battery_energy_h_km_t battery_energy_h_km;
+
+  uint8_t ui8_units_temp;
+  uint8_t ui8_units_time;
+  uint8_t ui8_units_weight;
 } rt_vars_t;
 
 /* Selector positions for customizable fields
@@ -214,7 +218,7 @@ typedef struct ui_vars_struct {
 	uint8_t ui8_number_of_assist_levels;
 	uint16_t ui16_wheel_perimeter;
 	uint16_t wheel_max_speed_x10;
-	uint8_t ui8_units_type;
+	uint8_t ui8_units_dist;
 	uint32_t ui32_wh_x10_offset;
 	uint32_t ui32_wh_x10_100_percent;
 	uint8_t ui8_battery_soc_enable;
@@ -395,6 +399,10 @@ typedef struct ui_vars_struct {
   uint8_t ui8_torque_sensor_filter;
   uint8_t ui8_torque_sensor_adc_threshold;
   uint8_t ui8_coast_brake_enable;
+
+  uint8_t ui8_units_temp;
+  uint8_t ui8_units_time;
+  uint8_t ui8_units_weight;
 } ui_vars_t;
 
 ui_vars_t* get_ui_vars(void);

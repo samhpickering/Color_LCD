@@ -609,9 +609,9 @@ bool mainScreenOnPress(buttons_events_t events) {
 
 
 void set_conversions() {
-  screenConvertMiles = ui_vars.ui8_units_type != 0; // Set initial value on unit conversions (FIXME, move this someplace better)
-  screenConvertFarenheit = screenConvertMiles; // FIXME, should be based on a different eeprom config value
-  screenConvertPounds = screenConvertMiles;
+  screenConvertMiles = ui_vars.ui8_units_dist != 0; // Set initial value on unit conversions (FIXME, move this someplace better)
+  screenConvertFarenheit = ui_vars.ui8_units_temp != 0;
+  screenConvertPounds = ui_vars.ui8_units_weight != 0;
 }
 
 void lcd_main_screen(void) {
@@ -1136,7 +1136,7 @@ void time(void) {
 
     case 1:
       // force to be [0 - 12]
-      if (ui_vars.ui8_units_type) { // FIXME, should be based on a different eeprom config value, just because someone is using mph doesn't mean they want 12 hr time
+      if (ui_vars.ui8_units_time != 0) { // FIXME, should be based on a different eeprom config value, just because someone is using mph doesn't mean they want 12 hr time
         if (p_rtc_time->ui8_hours > 12) {
           p_rtc_time->ui8_hours -= 12;
         }

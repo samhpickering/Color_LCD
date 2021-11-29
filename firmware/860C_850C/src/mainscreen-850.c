@@ -53,7 +53,7 @@ void mainScreenOnDirtyClean() {
   UG_DrawLine(159, 156, 159, 314, MAIN_SCREEN_FIELD_LABELS_COLOR);
 
   // wheel speed
-  if(ui_vars.ui8_units_type == 0)
+  if(ui_vars.ui8_units_dist == 0)
   {
     UG_PutString(265, 46 , "KM/H");
   }
@@ -504,8 +504,8 @@ void clock_time(void) {
   ui8_g_configuration_clock_hours = p_rtc_time->ui8_hours;
   ui8_g_configuration_clock_minutes = p_rtc_time->ui8_minutes;
 
-  // force to be [0 - 12] depending on SI or Ipmerial units
-  if (ui_vars.ui8_units_type) {
+  // force to be [0 - 12] depending on SI or Imperial units
+  if (ui_vars.ui8_units_time != 0) {
     if(ui8_g_configuration_clock_hours > 12) {
       ui8_g_configuration_clock_hours -= 12;
     }

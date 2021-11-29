@@ -196,12 +196,15 @@ static Field displayMenus[] =
   FIELD_EDITABLE_ENUM("Clock field", &ui_vars.ui8_time_field_enable, "disable", "clock", "batt SOC %", "batt volts"),
   FIELD_EDITABLE_UINT("Clock hours", &ui8_g_configuration_clock_hours, "", 0, 23, .onSetEditable = onSetConfigurationClockHours),
   FIELD_EDITABLE_UINT("Clock minutes", &ui8_g_configuration_clock_minutes, "", 0, 59, .onSetEditable = onSetConfigurationClockMinutes),
+  FIELD_EDITABLE_ENUM("Clock format", &ui_vars.ui8_units_time, "24h", "12h"),
   FIELD_EDITABLE_UINT("Brightness on", &ui_vars.ui8_lcd_backlight_on_brightness, "", 5, 100, .inc_step = 5, .onSetEditable = onSetConfigurationDisplayLcdBacklightOnBrightness),
   FIELD_EDITABLE_UINT("Brightness off", &ui_vars.ui8_lcd_backlight_off_brightness, "", 5, 100, .inc_step = 5, .onSetEditable = onSetConfigurationDisplayLcdBacklightOffBrightness),
   FIELD_EDITABLE_ENUM("Buttons invert", &ui_vars.ui8_buttons_up_down_invert, "default", "invert"),
 #endif
   FIELD_EDITABLE_UINT(_S("Auto power off", "Auto p off"), &ui_vars.ui8_lcd_power_off_time_minutes, "mins", 0, 255),
-  FIELD_EDITABLE_ENUM("Units", &ui_vars.ui8_units_type, "SI", "Imperial"),
+  FIELD_EDITABLE_ENUM(_S("Units (distance)", "Units dist"), &ui_vars.ui8_units_dist, "km", "mi"),
+  FIELD_EDITABLE_ENUM(_S("Units (temp)", "Units temp"), &ui_vars.ui8_units_temp, "C", "F"),
+  FIELD_EDITABLE_ENUM(_S("Units (weight)", "Units wght"), &ui_vars.ui8_units_weight, "kg", "lb"),
 #ifndef SW102
   FIELD_READONLY_ENUM("LCD type", &g_lcd_ic_type, "ILI9481", "ST7796", "unknown"),
 #else

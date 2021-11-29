@@ -24,7 +24,7 @@ const eeprom_data_t m_eeprom_data_defaults = {
   .ui8_assist_level = DEFAULT_VALUE_ASSIST_LEVEL,
   .ui16_wheel_perimeter = DEFAULT_VALUE_WHEEL_PERIMETER,
   .ui8_wheel_max_speed = DEFAULT_VALUE_WHEEL_MAX_SPEED,
-  .ui8_units_type = DEFAULT_VALUE_UNITS_TYPE,
+  .ui8_units_dist = DEFAULT_VALUE_UNITS_DIST,
   .ui32_wh_x10_offset = DEFAULT_VALUE_WH_X10_OFFSET,
   .ui32_wh_x10_100_percent = DEFAULT_VALUE_HW_X10_100_PERCENT,
   .ui8_battery_soc_enable = DEAFULT_VALUE_SHOW_NUMERIC_BATTERY_SOC,
@@ -296,6 +296,10 @@ const eeprom_data_t m_eeprom_data_defaults = {
   .ui32_trip_b_distance_x1000 = DEFAULT_VALUE_TRIP_DISTANCE,
   .ui32_trip_b_time = DEFAULT_VALUE_TRIP_TIME,
   .ui16_trip_b_max_speed_x10 = DEFAULT_VALUE_TRIP_MAX_SPEED,
+
+  .ui8_units_temp = DEFAULT_VALUE_UNITS_TEMP,
+  .ui8_units_time = DEFAULT_VALUE_UNITS_TIME,
+  .ui8_units_weight = DEFAULT_VALUE_UNITS_WEIGHT,
 };
 
 void eeprom_init() {
@@ -345,7 +349,7 @@ void eeprom_init_variables(void) {
 	ui_vars->ui16_wheel_perimeter = m_eeprom_data.ui16_wheel_perimeter;
 	ui_vars->wheel_max_speed_x10 =
 			m_eeprom_data.ui8_wheel_max_speed * 10;
-	ui_vars->ui8_units_type = m_eeprom_data.ui8_units_type;
+	ui_vars->ui8_units_dist = m_eeprom_data.ui8_units_dist;
 	ui_vars->ui32_wh_x10_offset = m_eeprom_data.ui32_wh_x10_offset;
 	ui_vars->ui32_wh_x10_100_percent =
 			m_eeprom_data.ui32_wh_x10_100_percent;
@@ -627,6 +631,10 @@ void eeprom_init_variables(void) {
       m_eeprom_data.ui16_trip_a_max_speed_x10;
   rt_vars->ui16_trip_b_max_speed_x10 =
       m_eeprom_data.ui16_trip_b_max_speed_x10;
+
+  ui_vars->ui8_units_temp = m_eeprom_data.ui8_units_temp > 1 ? m_eeprom_data.ui8_units_dist : m_eeprom_data.ui8_units_temp;
+  ui_vars->ui8_units_time = m_eeprom_data.ui8_units_time > 1 ? m_eeprom_data.ui8_units_dist : m_eeprom_data.ui8_units_time;
+  ui_vars->ui8_units_weight = m_eeprom_data.ui8_units_weight > 1 ? m_eeprom_data.ui8_units_dist : m_eeprom_data.ui8_units_weight;
 }
 
 void eeprom_write_variables(void) {
@@ -635,7 +643,7 @@ void eeprom_write_variables(void) {
 	m_eeprom_data.ui16_wheel_perimeter = ui_vars->ui16_wheel_perimeter;
 	m_eeprom_data.ui8_wheel_max_speed =
 			ui_vars->wheel_max_speed_x10 / 10;
-	m_eeprom_data.ui8_units_type = ui_vars->ui8_units_type;
+	m_eeprom_data.ui8_units_dist = ui_vars->ui8_units_dist;
 	m_eeprom_data.ui32_wh_x10_offset = ui_vars->ui32_wh_x10_offset;
 	m_eeprom_data.ui32_wh_x10_100_percent =
 			ui_vars->ui32_wh_x10_100_percent;
@@ -850,6 +858,10 @@ void eeprom_write_variables(void) {
 
   m_eeprom_data.ui16_trip_b_max_speed_x10 =
       ui_vars->ui16_trip_b_max_speed_x10;
+
+  m_eeprom_data.ui8_units_temp = ui_vars->ui8_units_temp;
+  m_eeprom_data.ui8_units_time = ui_vars->ui8_units_time;
+  m_eeprom_data.ui8_units_weight = ui_vars->ui8_units_weight;
 
 	flash_write_words(&m_eeprom_data, sizeof(m_eeprom_data) / sizeof(uint32_t));
 }
