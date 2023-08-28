@@ -9,6 +9,7 @@
 #ifndef _RTC_H_
 #define _RTC_H_
 
+#include <stdint.h>
 #include "stdio.h"
 
 typedef struct _rtc_time {

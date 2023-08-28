@@ -9,6 +9,7 @@
 #ifndef _EEPROM_H_
 #define _EEPROM_H_
 
+#include <stdint.h>
 #include "lcd.h"
 #include "state.h"
 #include "screen.h"
@@ -165,7 +166,7 @@ typedef struct eeprom_data {
   uint32_t ui32_trip_a_time;
   uint16_t ui16_trip_a_max_speed_x10;
 
-#ifndef SW102  
+#ifndef SW102
   uint8_t  ui8_trip_b_auto_reset;
 	uint16_t ui16_trip_b_auto_reset_hours;
   uint32_t ui32_trip_b_last_update_time;
@@ -384,7 +385,7 @@ void eeprom_init_defaults(void);
 #ifndef SW102
 #define DEFAULT_VALUE_TRIP_AUTO_RESET_ENABLE                         0 // disable
 #define DEFAULT_VALUE_TRIP_LAST_UPDATE                               0 // disable
-#define DEFAULT_VALUE_TRIP_A_AUTO_RESET_HOURS                        24 // 1 day 
+#define DEFAULT_VALUE_TRIP_A_AUTO_RESET_HOURS                        24 // 1 day
 #define DEFAULT_VALUE_TRIP_B_AUTO_RESET_HOURS                        168 // 1 week = 7 * 24 = 168 hours
 #endif
 #define DEFAULT_VALUE_TRIP_DISTANCE                                  0

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>
+
 void configscreen_show();
 
 extern Screen configScreen;

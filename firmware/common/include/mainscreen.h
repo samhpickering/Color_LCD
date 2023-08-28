@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdint.h>
 #include "screen.h"
 
 extern Screen mainScreen1, mainScreen2, bootScreen;
@@ -97,4 +98,3 @@ extern bool wd_failure_detected;
 
 extern uint8_t ui8_g_configuration_clock_hours;
 extern uint8_t ui8_g_configuration_clock_minutes;
-

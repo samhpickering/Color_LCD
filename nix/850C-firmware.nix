@@ -1,4 +1,4 @@
-{ gcc-arm-embedded-10, stdenvNoCC  }:
+{ gcc-arm-embedded, stdenvNoCC  }:
 stdenvNoCC.mkDerivation rec {
   pname = "850c-firmware";
   version = "1.0.0";
@@ -14,7 +14,7 @@ stdenvNoCC.mkDerivation rec {
     runHook postBuild
   '';
 
-  nativeBuildInputs = [ gcc-arm-embedded-10 ];
+  nativeBuildInputs = [ gcc-arm-embedded ];
 
   installPhase = ''
     runHook preInstall

@@ -9,6 +9,7 @@
 #ifndef PINS_H_
 #define PINS_H_
 
+#include <stdint.h>
 #include "stm32f10x_gpio.h"
 
 #ifdef DISPLAY_860C

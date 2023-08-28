@@ -9,6 +9,8 @@
 #ifndef _UTILS_H
 #define _UTILS_H
 
+#include <stdint.h>
+
 int32_t map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min,
 		int32_t out_max);
 uint8_t ui8_max(uint8_t value_a, uint8_t value_b);

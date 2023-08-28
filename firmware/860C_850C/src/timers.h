@@ -9,6 +9,8 @@
 #ifndef TIMERS_H_
 #define TIMERS_H_
 
+#include <stdint.h>
+
 void systick_init (void);
 
 void delay_ms (uint32_t ms);

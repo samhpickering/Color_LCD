@@ -9,6 +9,7 @@
 #ifndef _USART1_H_
 #define _USART1_H_
 
+#include <stdint.h>
 #include "stdio.h"
 
 void usart1_init(void);
